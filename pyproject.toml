@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "acp2-twitter-profile-scoring"
+version = "0.1.0"
+description = ""
+authors = ["Roope Rajala <roope.rajala.ext@nokia.com>"]
+
+[tool.poetry.dependencies]
+Flask = "^2.0.2"
+pandas = "^1.3.4"
+python = "^3.8"
+scikit-learn = "^1.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
