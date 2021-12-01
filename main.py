@@ -2,6 +2,13 @@ from flask import Flask, request, jsonify
 import scoring
 import db
 import twitter_handler as th
+import os
+from dotenv import load_dotenv
+
+# ENVIRONMENT VARIABLES
+load_dotenv()
+TWITTER_API = os.getenv('TWITTER_API')
+TWITTER_PASSWORD = os.getenv('TWITTER_PASSWORD')
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -39,5 +46,5 @@ def search_profiles():
         {"name": "person2", "id": 456}
     ])
 
-if __name__ == "__main__":    
+if __name__ == "__main__":        
     app.run()

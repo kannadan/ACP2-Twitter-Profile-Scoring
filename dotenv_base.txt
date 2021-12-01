@@ -1,0 +1,4 @@
+# copy file, rename .env and fill access keys
+
+TWITTER_API="TBD"
+TWITTER_PASSWORD="TBD"
