@@ -1,0 +1,24 @@
+version: '3'
+services:
+  twitter-profile-scoring:
+    container_name: twitter-profile-scoring
+    restart: unless-stopped
+    image: twitter-profile-scoring:latest
+    expose:
+      - 5000
+    environment:
+      - FLASK_ENV=Production
+  nginx:
+    container_name: twitter-profile-scoring-proxy
+    image: nginx-basic-auth
+    ports:
+      - "8765:80"
+    depends_on:
+      - twitter-profile-scoring
+    links:
+      - twitter-profile-scoring:twitter-profile-scoring
+    environment:
+      - FORWARD_HOST=twitter-profile-scoring
+      - FORWARD_PORT=5000
+      - BASIC_USERNAME=acp2
+      - BASIC_PASSWORD=${BASIC_PASSWORD}

@@ -12,6 +12,7 @@ scikit-learn = "^1.0.1"
 ipykernel = "^6.5.1"
 graphviz = "^0.18.2"
 py7zr = "^0.17.0"
+python-dotenv = "^0.19.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
