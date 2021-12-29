@@ -19,6 +19,11 @@ test_profile = {
     "tweets": 232
 }
 
+@app.route("/", methods=['GET'])
+def entry_point():
+    return "TODO", 200
+
+
 @app.route("/api/GetProfile", methods=['GET'])
 def get_profile_data():
     username = request.args.get('username')
@@ -47,4 +52,4 @@ def search_profiles():
     ])
 
 if __name__ == "__main__":        
-    app.run()
+    app.run(host='0.0.0.0')
