@@ -17,6 +17,6 @@ if [ -z $DEPLOY_SSH_PORT ]; then
     DEPLOY_SSH_PORT=22
 fi
 BASEDIR="/home/${DEPLOY_SSH_USER}"
-ssh -p $DEPLOY_SSH_PORT ${DEPLOY_SSH_USER}@${DEPLOY_HOST} """
+ssh -p $DEPLOY_SSH_PORT ${DEPLOY_SSH_USER}@${DEPLOY_SSH_HOST} """
     sudo -u docker ${BASEDIR}/deploy.sh
 """
