@@ -37,8 +37,9 @@ def get_profile_data():
 
         #save profile to database
         db.save_profile(profile)
-
-        return jsonify(profile)
+        response = jsonify(profile)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response 
     else: 
         return "Username not given", 400
 
