@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import scoring
 import db
 import twitter_handler as th
@@ -10,7 +10,10 @@ load_dotenv()
 TWITTER_API = os.getenv('TWITTER_API')
 TWITTER_PASSWORD = os.getenv('TWITTER_PASSWORD')
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='',
+            static_folder="twitter-rater-ui/dist",
+            template_folder='./twitter-rater-ui/dist')
 app.config["DEBUG"] = True
 
 test_profile = {
@@ -21,7 +24,7 @@ test_profile = {
 
 @app.route("/", methods=['GET'])
 def entry_point():
-    return "TODO", 200
+    return render_template('index.html')
 
 
 @app.route("/api/GetProfile", methods=['GET'])

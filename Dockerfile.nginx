@@ -17,4 +17,4 @@ COPY nginx-basic-auth.conf nginx-basic-auth.conf
 
 COPY run-nginx.sh ./
 RUN chmod 0755 ./run-nginx.sh
-CMD [ "./run-nginx.sh" ]
+CMD [ "sh", "/run-nginx.sh" ]
