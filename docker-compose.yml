@@ -10,6 +10,7 @@ services:
       - FLASK_ENV=Production
   nginx:
     container_name: twitter-profile-scoring-proxy
+    restart: unless-stopped
     image: nginx-basic-auth
     ports:
       - "8765:80"
