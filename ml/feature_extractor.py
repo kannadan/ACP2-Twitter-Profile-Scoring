@@ -5,6 +5,7 @@ def extract_all_features(profile):
     metrics = profile["public_metrics"]
     features = {
         #"location": profile_data["location"],
+        "id": profile["id"],
         "verified": int(profile["verified"]),
         "name_len": len(profile["name"]),
         "followers_count": metrics["followers_count"],
@@ -21,6 +22,12 @@ def extract_all_features(profile):
     else:
         features["desc_len"] = 0
         features["desc_words"] = 0
+
+    if features['followers_count'] > 0:
+        features["following_followers_ratio"] = features['following_count'] / features['followers_count']
+    else:
+        features["following_followers_ratio"] = 0
+
 
     tweet_features = get_tweet_features(profile)
     if not tweet_features:
