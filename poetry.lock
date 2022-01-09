@@ -820,6 +820,14 @@ python-versions = ">=3.7"
 test = ["pytest"]
 
 [[package]]
+name = "treeinterpreter"
+version = "0.2.3"
+description = "Package for interpreting scikit-learn's decision tree and random forest predictions."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "wcwidth"
 version = "0.2.5"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -853,7 +861,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "3a66d08f3ebf74695434a985298183bd394b25047ddb5c2cb55bfcf5befe78c3"
+content-hash = "c08f5a6f1ddf076960ee10017df10e87fe5f87fa33c0b520363f08ed9f2edb9e"
 
 [metadata.files]
 appnope = [
@@ -1848,6 +1856,10 @@ tornado = [
 traitlets = [
     {file = "traitlets-5.1.1-py3-none-any.whl", hash = "sha256:2d313cc50a42cd6c277e7d7dc8d4d7fedd06a2c215f78766ae7b1a66277e0033"},
     {file = "traitlets-5.1.1.tar.gz", hash = "sha256:059f456c5a7c1c82b98c2e8c799f39c9b8128f6d0d46941ee118daace9eb70c7"},
+]
+treeinterpreter = [
+    {file = "treeinterpreter-0.2.3-py2.py3-none-any.whl", hash = "sha256:48660bbddd4577e28655abf0ffb77eb8b8e57d771e32503be56737103aa457a4"},
+    {file = "treeinterpreter-0.2.3.tar.gz", hash = "sha256:da5c24f802f7d072bc457b6e4b289d5ee41961ce33437e8dc439a2cfd9c6d994"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},

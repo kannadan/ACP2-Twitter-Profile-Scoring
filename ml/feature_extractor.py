@@ -26,7 +26,7 @@ def extract_all_features(profile):
     if features['followers_count'] > 0:
         features["following_followers_ratio"] = features['following_count'] / features['followers_count']
     else:
-        features["following_followers_ratio"] = 0
+        features["following_followers_ratio"] = 999999
 
 
     tweet_features = get_tweet_features(profile)
