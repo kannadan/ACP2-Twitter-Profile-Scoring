@@ -1,0 +1,45 @@
+<HTMLQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd">
+<HTMLContent><![CDATA[
+
+<!-- YOUR HTML BEGINS -->
+<!DOCTYPE html>
+
+<html>
+  <body>
+	<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+	<crowd-form>
+	  <crowd-classifier
+	    name="credibility"
+	    categories="['Very Credible', 'Credible', 'Neutral', 'Not So Credible', 'Not Credible']"
+	    header="How credible you think profile below is?"
+	  >
+	    <classification-target>
+	    See the profile and tweets below and select how thursworth profile and user behind it is.
+	    <p>%s</p>
+        <p>%s</p>
+        <p>%s</p>
+        <p>%s</p>
+        <p>%s</p>
+        </classification-target>
+
+	    <full-instructions header="Credibility Analysis Instructions">
+	    <p><strong>Very Credible</strong> Profile is Very Credible</p>
+	    <p><strong>Credible</strong>:  Profile is Credible</p>
+	    <p><strong>Neutral</strong>: Profile is neither credible or not credible</p>
+	    <p><strong>Not so Crebile</strong>: Profile is not so credible</p>
+	    <p><strong>Not Credible</strong>: Profile is not credible</p>
+	    </full-instructions>
+
+	    <short-instructions>
+	     Choose credibility level for profile link provided
+	    </short-instructions>
+	  </crowd-classifier>
+	</crowd-form>
+  </body
+</html>
+
+<!-- YOUR HTML ENDS -->
+]]>
+</HTMLContent>
+<FrameHeight>600</FrameHeight>
+</HTMLQuestion>
