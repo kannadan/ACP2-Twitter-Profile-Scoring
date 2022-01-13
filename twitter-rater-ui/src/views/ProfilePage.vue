@@ -18,8 +18,16 @@
                             <div class="mt-8">
                                 <p>Profile desctiption here</p>                            
                                 <p>Other info about the profile here if there is any</p>                                
-
+                                <p>Location: Somewhere</p>
                             </div>                                        
+                        </v-col>
+                    </v-row>
+                    <v-row class="mx-16">
+                        <v-col>
+                            Following: 12
+                        </v-col>
+                        <v-col>
+                            Followers: 3131
                         </v-col>
                     </v-row>
                     <v-row class="mx-16">
