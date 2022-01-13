@@ -1,5 +1,6 @@
 import json
 import copy
+from os import remove
 import os.path
 import random
 import time
@@ -38,10 +39,10 @@ def get_api():
                       api_version='2')
 
 
-def getTimelineByID(id=2244994945):
+def getTimelineByID(id=2244994945, max_results = 100):
     try:
         url = f'users/:{id}/tweets'
-        params = get_params()
+        params = get_params(max_results= max_results)
         api = get_api()
         while True:
             tweets = api.request(url, params)
@@ -119,6 +120,44 @@ def getUserById(id=2244994945):
         print('Exception')
         print(e)
 
+def getUserByName(name='jack'):
+    try:
+        url = f'users/by/username/:{name}'
+        params = {"user.fields": "created_at,description,entities,id,location,name,pinned_tweet_id,"
+                                 "profile_image_url,protected,public_metrics,url,username,verified,withheld"}
+        api = get_api()
+        while True:
+            user = api.request(url, params)
+            if user.status_code == 200:
+                results = user.json()
+                if 'data' in results.keys():
+                    print(user.get_quota())
+                    return results['data']
+                else:
+                    return None
+            else:
+                reset = int(user.headers['x-rate-limit-reset'])
+                reset = datetime.fromtimestamp(reset)
+                print("Sleep until:" + str(reset))
+                nowt = datetime.now()
+                diff = reset - nowt
+                time.sleep(diff.total_seconds() + 2)
+
+    except TwitterRequestError as e:
+        print('Request error')
+        print(e.status_code)
+        for msg in iter(e):
+            print(msg)
+
+    except TwitterConnectionError as e:
+        print('Connection error')
+        print(e)
+
+    except Exception as e:
+        print('Exception')
+        print(e)
+
+
 
 def getFollowing(id=2244994945):
     try:
@@ -156,7 +195,7 @@ def getFollowing(id=2244994945):
         print(e)
 
 
-idlistPath = 'idList.txt'
+idlistPath = 'idList2.txt'
 iterationIDListPath = 'iterationIDList.txt'
 iteratedIndexPath = 'iteratedIndex.txt'
 
@@ -241,22 +280,40 @@ def crawlingProfiles():
             for index, id in enumerate(results):
                 print(str(id) + '    ' + str(index / count))
                 filepath = os.path.join(profilesBase, str(id))
-                if not exists(filepath):
+                if exists(filepath):
                     userprofile = getUserById(id)
                     if userprofile is not None:
                         if 'protected' in userprofile.keys():
                             if not userprofile["protected"]:
                                 tweets = getTimelineByID(id)
                                 userprofile['tweets'] = tweets
-                                fileObject = open(filepath, 'w+')
-                                json.dump(userprofile, fileObject)
-                                fileObject.close()
+                                if len(tweets)>5:
+                                    fileObject = open(filepath, 'w+')
+                                    json.dump(userprofile, fileObject)
+                                    fileObject.close()
+                                else:
+                                    if exists(filepath):
+                                        remove(filepath)
+                            else:
+                                if exists(filepath):
+                                    remove(filepath)
+
                 else:
                     print('Existed' + ' ' + str(id))
 
     else:
         print('no id list file')
 
+def getProfileByUsername(name = 'jack'):
+    userprofile = getUserByName(name)
+    if userprofile is not None:
+        if 'protected' in userprofile.keys():
+            if not userprofile["protected"]:
+                tweets = getTimelineByID(int(userprofile['id']), max_results= 20)
+                userprofile['tweets'] = tweets
+    return userprofile
+
 
 if __name__ == "__main__":
-    crawlingProfiles()
+    #crawlingProfiles()
+    print(getProfileByUsername())
