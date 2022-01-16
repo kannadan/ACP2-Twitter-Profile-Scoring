@@ -25,11 +25,16 @@ def mturk_conf():
 
 def answer_number(text):
     return {
-        'Very Credible': 5,
-        'Credible': 4,
-        'Neutral': 3,
-        'Not So Credible': 2,
-        'Not Credible': 1,
+        'Very Trustworthy': 9,
+        ' ': 8,
+        'Trustworthy': 7,
+        '  ' :6,
+        'Somewhat Trustworthy': 5,
+        'Somewhat Untrustworthy': 4,
+        '   ': 3,
+        'Untrustworthy': 2,
+        '    ': 1,
+        'Very Untrustworthy': 0,
     }[text]
 
 
@@ -38,7 +43,7 @@ def mturk_result(mturk):
     t = open("answers.txt", "a")
     with open("hits.txt", "r") as f:
         for row_list in csv.reader(f):
-            response = mturk.list_assignments_for_hit(HITId=row_list[1], AssignmentStatuses=['Submitted', 'Approved'])
+            response = mturk.list_assignments_for_hit(HITId=row_list[2], AssignmentStatuses=['Submitted', 'Approved'])
 
             assignments = response['Assignments']
             print('The number of submitted assignments for profile {} is {}'.format(row_list[0], len(assignments)))
@@ -57,10 +62,11 @@ def mturk_result(mturk):
                 json_object = json_object["credibility"]
 
                 t.write(row_list[0] + ",")
+                t.write(row_list[1] + ",")
                 t.write(str(answer_number(json_object["label"])) + ",")
                 t.write(assignment_id + ",")
                 t.write(worker_id + ",")
-                t.write(row_list[1] + "\n")
+                t.write(row_list[2] + "\n")
 
                 print('The Worker with ID {} submitted assignment {} for profile {} and gave the answer "{}"'.format(
                     worker_id, assignment_id, row_list[0], json_object["label"]))
