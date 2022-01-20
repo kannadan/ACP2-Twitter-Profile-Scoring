@@ -1,5 +1,9 @@
 import datetime
-
+import nltk
+nltk.download([
+    "vader_lexicon"
+])
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 def extract_all_features(profile):
     metrics = profile["public_metrics"]
@@ -49,6 +53,14 @@ def get_tweet_features(profile):
     total_quote_count = 0
     total_mentions_count = 0
 
+    sia = SentimentIntensityAnalyzer()
+    sentiments = {
+        "compound": 0,
+        "pos": 0,
+        "neg": 0,
+        "neu": 0
+    }
+
     for tweet in tweets:
         ref_tweets = tweet.get("referenced_tweets", [])
         if ref_tweets and ref_tweets[0]["type"] == "retweeted":
@@ -56,16 +68,24 @@ def get_tweet_features(profile):
             continue
         own_tweet_count += 1
         tweet_metrics = tweet["public_metrics"]
-        total_tweet_len += len(tweet["text"])
-        total_tweet_words += len(tweet["text"].split(" "))
+        tweet_text = tweet["text"]
+        total_tweet_len += len(tweet_text)
+        total_tweet_words += len(tweet_text.split(" "))
+
+        polarity_scores = sia.polarity_scores(tweet_text)
+        sentiments["compound"] += polarity_scores["compound"]
+        sentiments["pos"] += polarity_scores["pos"]
+        sentiments["neg"] += polarity_scores["neg"]
+        sentiments["neu"] += polarity_scores["neu"]
         total_retweet_count += tweet_metrics["retweet_count"]
         total_reply_count += tweet_metrics["reply_count"]
         total_like_count += tweet_metrics["like_count"]
         total_quote_count += tweet_metrics["quote_count"]
         total_mentions_count += len(tweet.get("entities", {}).get("mentions", []))
-
+ 
     if own_tweet_count == 0:
         return False
+    tweet_count = len(tweets)
     return {
         "tweet.length_mean": total_tweet_len / own_tweet_count,
         "tweet.words_mean": total_tweet_words / own_tweet_count,
@@ -74,7 +94,11 @@ def get_tweet_features(profile):
         "tweet.likes_mean": total_like_count / own_tweet_count,
         "tweet.quotes_mean": total_quote_count / own_tweet_count,
         "tweet.mentions_mean": total_mentions_count / own_tweet_count,
-        "tweet.retweets_percentage": retweet_count / len(tweets)
+        "tweet.retweets_percentage": retweet_count / tweet_count,
+        "tweet.sentiment.total": sentiments["compound"] / tweet_count,
+        "tweet.sentiment.pos": sentiments["pos"] / tweet_count,
+        "tweet.sentiment.neg": sentiments["neg"] / tweet_count,
+        "tweet.sentiment.neu": sentiments["neu"] / tweet_count
     }
 
 

@@ -15,7 +15,12 @@ def query_model(query_data):
     """
     query_data - A dictionary containing Twitter profile data from Twitter API
     """
-    features = extract_all_features(query_data)
+    try:
+        features = extract_all_features(query_data)
+    except Exception as e:
+        print(f"Feature extraction failed: {e}")
+        return None
+
     del features['id']
 
     model = pickle.load(open(os.path.join(DIR_PATH, "model", "model.pkl"), 'rb'))
@@ -27,29 +32,51 @@ def query_model(query_data):
     prediction = model.predict(scaled_data)
     return prediction[0], explanations
 
-def get_explanations(model, df, count=6):
+def get_explanations(model, df):
     prediction, bias, contributions = ti.predict(model, df)
 
     feature_names = model.feature_names_in_
-    positives = []
-    negatives = []
+    feature_contrs = zip(contributions[0], feature_names)
+    feature_contrs = sorted(feature_contrs, key=lambda x: -abs(x[0]))
 
-    for i in range(len(df)):
-        feature_contrs = zip(contributions[i], feature_names)
-        feature_contrs = sorted(feature_contrs, key=lambda x: -abs(x[0]))
-        used_feature_count = min(count, len(feature_contrs))
-        feature_contrs = feature_contrs[0:used_feature_count]
-        for contr, feature in feature_contrs:
+    print("Full contributions list\n-------------------")
+    for contr, feature in feature_contrs:
+        print(f"{feature}: {contr:.3f}")
+    print("-------------------")
+
+    return select_explanations(feature_contrs)
+
+
+def select_explanations(feature_contrs, count=6):
+    positive_features = []
+    negative_features = []
+    all_selected_features = []
+
+    target_feature_count = min(count, len(feature_contrs))
+    feature_contrs = feature_contrs[0:target_feature_count]
+
+    while len(all_selected_features) < target_feature_count and len(feature_contrs):
+        feature_found = False
+        for i in range(len(feature_contrs)):
+            contr, feature = feature_contrs[i]
             feature_name = get_feature_human_name(feature)
+            if not feature_name or feature_name in all_selected_features:
+                continue
+            feature_found = True
+            all_selected_features.append(feature_name)
             if contr > 0:
-                positives.append(feature_name)
+                positive_features.append(feature_name)
             else:
-                negatives.append(feature_name)
+                negative_features.append(feature_name)
+        if not feature_found:
+            break
+        else:
+            feature_contrs = feature_contrs[i+1:]
     return {
-        "positives": positives,
-        "negatives": negatives
+        "all": all_selected_features,
+        "positives": positive_features,
+        "negatives": negative_features
     }
-
 
 def get_feature_human_name(feature_name):
     if feature_name == "tweet.replies_mean":
@@ -72,8 +99,8 @@ def get_feature_human_name(feature_name):
         return "Verified profile status"
     elif feature_name == "listed_count":
         return "Appearance of profile in public lists"
-    else:
-        return feature_name
+    elif feature_name.startswith("tweet.sentiment."):
+        return "Sentiment of tweets"
 
 
 if __name__ == '__main__':
