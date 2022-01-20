@@ -1,0 +1,50 @@
+<HTMLQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd">
+<HTMLContent><![CDATA[
+
+<!-- YOUR HTML BEGINS -->
+<!DOCTYPE html>
+
+<html>
+  <body>
+	<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+	<crowd-form>
+	  <crowd-classifier
+	    name="credibility"
+	    categories="['Very Trustworthy', ' ', 'Trustworthy', '  ', 'Somewhat Trustworthy', 'Somewhat Untrustworthy', '   ',  'Untrustworthy', '    ', 'Very Untrustworthy']"
+	    header="How Trustworthy you think profile below is?"
+	  >
+	    <classification-target>
+	    See the profile and tweets below and select how trustworthy profile and user behind it is.
+	    <p>%s</p>
+        <p>%s</p>
+        <p>%s</p>
+        <p>%s</p>
+        <p>%s</p>
+        </classification-target>
+
+	    <full-instructions header="Credibility Analysis Instructions">
+	    <p><strong>Very Trustworthy</strong> Profile is Very Trustworthy</p>
+	    <p><strong> </strong> Profile is between Trustworthy and Very Trustworthy</p>
+	    <p><strong>Trustworthy</strong> Profile is Trustworthy</p>
+	    <p><strong>  </strong> Profile is between Somewhat Trustworthy and Trustworthy</p>
+	    <p><strong>Somewhat Trustworthy</strong>: Profile is Somewhat Trustworthy</p>
+	    <p><strong>Somewhat Untrustworthy</strong>: Profile is Somewhat Untrustworthy</p>
+	    <p><strong>   </strong>: Profile is between Somewhat Untrustworthy and Untrustworthy</p>
+	    <p><strong>Untrustworthy</strong>: Profile is Untrustworthy</p>
+	    <p><strong>    </strong>: Profile is between Untrustworthy and Very Untrustworthy</p>
+	    <p><strong>Very Untrustworthy</strong>: Profile is Very Untrustworthy</p>
+	    </full-instructions>
+
+	    <short-instructions>
+	     Choose level how much you trust twitter profile
+	    </short-instructions>
+	  </crowd-classifier>
+	</crowd-form>
+  </body
+</html>
+
+<!-- YOUR HTML ENDS -->
+]]>
+</HTMLContent>
+<FrameHeight>800</FrameHeight>
+</HTMLQuestion>
