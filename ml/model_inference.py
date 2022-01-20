@@ -22,12 +22,11 @@ def query_model(query_data):
     scaler = pickle.load(open(os.path.join(DIR_PATH, "model", "scaler.pkl"), 'rb'))
 
     df = pd.DataFrame(data=[features])
-    explanations = get_explanations(model, df)
     scaled_data = scaler.transform(df)
-    prediction = model.predict(scaled_data)
-    return prediction[0], explanations
+    prediction, explanations = get_prediction(model, scaled_data)
+    return prediction, explanations
 
-def get_explanations(model, df, count=6):
+def get_prediction(model, df, count=6):
     prediction, bias, contributions = ti.predict(model, df)
 
     feature_names = model.feature_names_in_
@@ -45,7 +44,7 @@ def get_explanations(model, df, count=6):
                 positives.append(feature_name)
             else:
                 negatives.append(feature_name)
-    return {
+    return prediction[0], {
         "positives": positives,
         "negatives": negatives
     }
