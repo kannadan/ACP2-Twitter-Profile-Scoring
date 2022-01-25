@@ -31,7 +31,7 @@ def query_model(query_data):
 
 def get_prediction(model, df):
     prediction, bias, contributions = ti.predict(model, df)
-
+    score = round(prediction[0][0], 2)
     feature_names = model.feature_names_in_
     feature_contrs = zip(contributions[0], feature_names)
     feature_contrs = sorted(feature_contrs, key=lambda x: -abs(x[0]))
@@ -41,39 +41,39 @@ def get_prediction(model, df):
         print(f"{feature}: {contr:.3f}")
     print("-------------------")
 
-    return prediction[0][0], select_explanations(feature_contrs)
+    return score, select_explanations(feature_contrs)
 
 
-def select_explanations(feature_contrs, count=6):
+def select_explanations(feature_contrs, count_per_type=3):
     positive_features = []
     negative_features = []
     all_selected_features = []
+    for i in range(len(feature_contrs)):
+        contr, feature = feature_contrs[i]
+        contr = round(contr, 2)
+        feature_name = get_feature_human_name(feature)
+        if not feature_name or feature_name in all_selected_features:
+            continue
+        if contr > 0 and len(positive_features) < count_per_type:
+            positive_features.append({
+                "name": feature_name,
+                "contribution": contr
+            })
+            if len(positive_features) == count_per_type and len(negative_features) == count_per_type:
+                break
+        elif contr < 0 and len(negative_features) < count_per_type:
+            negative_features.append({
+                "name": feature_name,
+                "contribution": contr
+            })
+            if len(positive_features) == count_per_type and len(negative_features) == count_per_type:
+                break
 
-    target_feature_count = min(count, len(feature_contrs))
-    feature_contrs = feature_contrs[0:target_feature_count]
-
-    while len(all_selected_features) < target_feature_count and len(feature_contrs):
-        feature_found = False
-        for i in range(len(feature_contrs)):
-            contr, feature = feature_contrs[i]
-            feature_name = get_feature_human_name(feature)
-            if not feature_name or feature_name in all_selected_features:
-                continue
-            feature_found = True
-            all_selected_features.append(feature_name)
-            if contr > 0:
-                positive_features.append(feature_name)
-            else:
-                negative_features.append(feature_name)
-        if not feature_found:
-            break
-        else:
-            feature_contrs = feature_contrs[i+1:]
     return {
-        "all": all_selected_features,
         "positives": positive_features,
         "negatives": negative_features
     }
+
 
 def get_feature_human_name(feature_name):
     if feature_name == "tweet.replies_mean":
