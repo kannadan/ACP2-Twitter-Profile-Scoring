@@ -4,6 +4,7 @@ import db
 import twitter_handler as th
 import os
 from dotenv import load_dotenv
+from ml.model_inference import query_model
 
 # ENVIRONMENT VARIABLES
 load_dotenv()
@@ -35,8 +36,11 @@ def get_profile_data():
         profile = th.get_profile(username)
 
         #score profile
-        score = scoring.score_profile(profile)
-        profile["score"] = score
+        score, explanations = query_model(profile)
+        profile["ml_output"] = {
+            "score": score,
+            "explanations": explanations
+        }
 
         #save profile to database
         db.save_profile(profile)
