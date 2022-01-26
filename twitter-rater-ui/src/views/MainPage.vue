@@ -35,13 +35,13 @@
         },
         methods: {
             getProfile(){
-                console.log("Profile search " + this.searchTerm)
+                console.log("Profile search " + this.searchTerm + " " + this.apiUrl)
                 fetch(this.apiUrl + "GetProfile?username=" + this.searchTerm)
                     .then(response => response.json())
-                    .then((data) => {
-                        console.log(data)
+                    .then((data) => {                        
                         if(data)
-                            this.$router.push("Profile")
+                            console.log("DATA", data)
+                            // this.$router.push("Profile")
                     })
                     .catch((e) => {
                         console.log("Error", e)

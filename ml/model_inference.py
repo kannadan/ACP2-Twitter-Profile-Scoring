@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 import pickle
 from treeinterpreter import treeinterpreter as ti
-from feature_extractor import extract_all_features
+from ml.feature_extractor import extract_all_features
 
 
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))

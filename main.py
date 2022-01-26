@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template
-import scoring
 import db
 import twitter_handler as th
 import os
@@ -36,14 +35,13 @@ def get_profile_data():
         profile = th.get_profile(username)
 
         #score profile
-        score, explanations = query_model(profile)
-        profile["ml_output"] = {
-            "score": score,
-            "explanations": explanations
-        }
+        # score, explanations = query_model(profile)
+        # profile["ml_output"] = {
+        #     "score": score,
+        #     "explanations": explanations
+        # }
 
-        #save profile to database
-        db.save_profile(profile)
+        #build response        
         response = jsonify(profile)
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response 
