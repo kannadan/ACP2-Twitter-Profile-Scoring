@@ -1,3 +1,5 @@
 #!/bin/bash
+set -e
+echo "Building"
 docker build -t twitter-profile-scoring:latest .
 docker build -t nginx-basic-auth -f Dockerfile.nginx .

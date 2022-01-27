@@ -1,0 +1,6 @@
+.git/
+__pycache__/
+.venv/
+twitter-rater-ui/node-modules/
+twitter-rater-ui/dist/
+ml/data/
