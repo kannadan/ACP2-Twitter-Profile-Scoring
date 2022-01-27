@@ -23,27 +23,12 @@ def mturk_conf():
     return client
 
 
-def answer_number(text):
-    return {
-        'Very Trustworthy': 9,
-        ' ': 8,
-        'Trustworthy': 7,
-        '  ' :6,
-        'Somewhat Trustworthy': 5,
-        'Somewhat Untrustworthy': 4,
-        '   ': 3,
-        'Untrustworthy': 2,
-        '    ': 1,
-        'Very Untrustworthy': 0,
-    }[text]
-
-
 def mturk_result(mturk):
     print("Reading from hits.txt, writting to answers.txt")
     t = open("answers.txt", "a")
     with open("hits.txt", "r") as f:
         for row_list in csv.reader(f):
-            response = mturk.list_assignments_for_hit(HITId=row_list[2], AssignmentStatuses=['Submitted', 'Approved'])
+            response = mturk.list_assignments_for_hit(HITId=row_list[1], AssignmentStatuses=['Submitted', 'Approved'])
 
             assignments = response['Assignments']
             print('The number of submitted assignments for profile {} is {}'.format(row_list[0], len(assignments)))
@@ -52,24 +37,34 @@ def mturk_result(mturk):
                 assignment_id = assignment['AssignmentId']
                 answer_xml = parseString(assignment['Answer'])
 
-                # the answer is an xml document. we pull out the value of the first
+                # the answer is a xml document. we pull out the value of the first
                 # //QuestionFormAnswers/Answer/FreeText
                 answer = answer_xml.getElementsByTagName('FreeText')[0]
 
                 # See https://stackoverflow.com/questions/317413
                 only_answer = " ".join(t.nodeValue for t in answer.childNodes if t.nodeType == t.TEXT_NODE)
+
                 json_object = json.loads(only_answer)[0]
-                json_object = json_object["credibility"]
 
-                t.write(row_list[0] + ",")
-                t.write(row_list[1] + ",")
-                t.write(str(answer_number(json_object["label"])) + ",")
-                t.write(assignment_id + ",")
-                t.write(worker_id + ",")
-                t.write(row_list[2] + "\n")
+                dictionary = {
+                    "twitter_ID": row_list[0],
+                    "profile_score1": int(list(json_object["profile_score1"].keys())
+                                          [list(json_object["profile_score1"].values()).index(True)]),
+                    "profile_score2": int(list(json_object["profile_score2"].keys())
+                                          [list(json_object["profile_score2"].values()).index(True)]),
+                    "tweet_score1":  int(list(json_object["tweet_score1"].keys())
+                                         [list(json_object["tweet_score1"].values()).index(True)]),
+                    "tweet_score2": int(list(json_object["tweet_score2"].keys())
+                                        [list(json_object["tweet_score2"].values()).index(True)]),
+                    "tweet_score3": int(list(json_object["tweet_score3"].keys())
+                                        [list(json_object["tweet_score3"].values()).index(True)]),
+                    "HIT_ID": row_list[1],
+                    "assignment_id": assignment_id,
+                    "worker_id": worker_id,
+                    "assignments": len(assignments)
+                }
 
-                print('The Worker with ID {} submitted assignment {} for profile {} and gave the answer "{}"'.format(
-                    worker_id, assignment_id, row_list[0], json_object["label"]))
+                t.write(json.dumps(dictionary, indent=4) + "\n")
 
                 # Approve the Assignment (if it hasn't already been approved)
                 if assignment['AssignmentStatus'] == 'Submitted':

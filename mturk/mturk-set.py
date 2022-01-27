@@ -24,7 +24,7 @@ def mturk_conf():
 def mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group):
     # Create hit
 
-    question = open(file='question.xml', mode='r').read() % (ht1, ht2, ht3, ht4, ht5)
+    question = open(file='question2.xml', mode='r').read() % (ht1, ht2, ht3, ht4, ht5)
 
     new_hit = client.create_hit(
         Title='How trustworthy Twitter profile is?',
@@ -44,7 +44,7 @@ def mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group):
 
 def mturk_hits():
     print("Reading from list.txt, writing to hits.txt")
-    a = 0
+
     group = 0
     t = open("hits.txt", "a")
     with open("list.txt", "r") as f:
@@ -64,24 +64,14 @@ def mturk_hits():
             ht4 = hyperlink_format.format(link=link + "_tweet_2.png", text="Tweet_2")
             ht5 = hyperlink_format.format(link=link + "_tweet_3.png", text="Tweet 3")
 
-            b = 0
-            for b in range(2):
-                if b == 0:
-                    new_hit = mturk_create_single_hit(ht1, ht2, " ", " ", " ", line, group)
-                else:
-                    new_hit = mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group)
+            new_hit = mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group)
 
-                print("https://workersandbox.mturk.com/mturk/preview?groupId=" + new_hit['HIT']['HITGroupId'])
-                print("HITID = " + new_hit['HIT']['HITId'] + " (Use to Get Results)")
-                t.write(line + ",")
-                t.write(str(b) + ",")
-                t.write(new_hit['HIT']['HITId'] + ",")
-                t.write(new_hit['HIT']['HITGroupId'] + ",")
-                t.write("https://workersandbox.mturk.com/mturk/preview?groupId=" + new_hit['HIT']['HITGroupId'] + "\n")
-                a += 1
-            if a >= 10:
-                a = 0
-                group += 1
+            print("https://workersandbox.mturk.com/mturk/preview?groupId=" + new_hit['HIT']['HITGroupId'])
+            print("HITID = " + new_hit['HIT']['HITId'] + " (Use to Get Results)")
+            t.write(line + ",")
+            t.write(new_hit['HIT']['HITId'] + ",")
+            t.write(new_hit['HIT']['HITGroupId'] + ",")
+            t.write("https://workersandbox.mturk.com/mturk/preview?groupId=" + new_hit['HIT']['HITGroupId'] + "\n")
     t.close()
     f.close()
     return
