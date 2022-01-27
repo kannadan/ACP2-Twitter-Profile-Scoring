@@ -35,11 +35,11 @@ def get_profile_data():
         profile = th.get_profile(username)
 
         #score profile
-        # score, explanations = query_model(profile)
-        # profile["ml_output"] = {
-        #     "score": score,
-        #     "explanations": explanations
-        # }
+        score, explanations = query_model(profile)
+        profile["ml_output"] = {
+            "score": score,
+            "explanations": explanations
+        }
 
         #build response        
         response = jsonify(profile)

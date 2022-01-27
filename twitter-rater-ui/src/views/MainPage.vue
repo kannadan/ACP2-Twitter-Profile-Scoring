@@ -38,10 +38,10 @@
                 console.log("Profile search " + this.searchTerm + " " + this.apiUrl)
                 fetch(this.apiUrl + "GetProfile?username=" + this.searchTerm)
                     .then(response => response.json())
-                    .then((data) => {                        
+                    .then((data) => {                                             
                         if(data)
-                            console.log("DATA", data)
-                            // this.$router.push("Profile")
+                            this.$store.commit('setProfile', data)                            
+                            this.$router.push("Profile")
                     })
                     .catch((e) => {
                         console.log("Error", e)

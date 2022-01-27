@@ -9,7 +9,7 @@ from TwitterAPI import TwitterAPI, TwitterOAuth, TwitterRequestError, TwitterCon
 from os.path import exists
 from datetime import datetime
 
-import tokens as osenv
+import tas.tokens as osenv
 
 bearer_token = osenv.bearer_token
 
@@ -46,6 +46,7 @@ def getTimelineByID(id=2244994945, max_results = 100):
         api = get_api()
         while True:
             tweets = api.request(url, params)
+            
             if tweets.status_code == 200:
                 results = tweets.json()
                 if 'data' in results.keys():
@@ -127,7 +128,7 @@ def getUserByName(name='jack'):
                                  "profile_image_url,protected,public_metrics,url,username,verified,withheld"}
         api = get_api()
         while True:
-            user = api.request(url, params)
+            user = api.request(url, params)            
             if user.status_code == 200:
                 results = user.json()
                 if 'data' in results.keys():
@@ -135,13 +136,46 @@ def getUserByName(name='jack'):
                     return results['data']
                 else:
                     return None
-            else:
+            else:                
                 reset = int(user.headers['x-rate-limit-reset'])
                 reset = datetime.fromtimestamp(reset)
                 print("Sleep until:" + str(reset))
                 nowt = datetime.now()
                 diff = reset - nowt
                 time.sleep(diff.total_seconds() + 2)
+    except TwitterRequestError as e:
+        print('Request error')
+        print(e.status_code)
+        for msg in iter(e):
+            print(msg)
+
+    except TwitterConnectionError as e:
+        print('Connection error')
+        print(e)
+
+    except Exception as e:
+        print('Exception')
+        print(e)
+
+def getSingleUserByName(name='jack'):
+    try:
+        url = f'users/by/username/:{name}'
+        params = {"user.fields": "created_at,description,entities,id,location,name,pinned_tweet_id,"
+                                 "profile_image_url,protected,public_metrics,url,username,verified,withheld"}
+        api = get_api()
+        while True:
+            user = api.request(url, params)            
+            if user.status_code == 200:
+                results = user.json()
+                if 'data' in results.keys():
+                    print(user.get_quota())
+                    return results['data']
+                else:
+                    return None
+            elif user.status_code == 400:
+                return 404
+            else:                
+                return None
 
     except TwitterRequestError as e:
         print('Request error')
@@ -307,6 +341,15 @@ def crawlingProfiles():
 def getProfileByUsername(name = 'jack'):
     userprofile = getUserByName(name)
     if userprofile is not None:
+        if 'protected' in userprofile.keys():
+            if not userprofile["protected"]:
+                tweets = getTimelineByID(int(userprofile['id']), max_results= 20)
+                userprofile['tweets'] = tweets
+    return userprofile
+
+def getSingleProfileByUsername(name = 'jack'):
+    userprofile = getSingleUserByName(name)
+    if userprofile is not None and userprofile != 404:
         if 'protected' in userprofile.keys():
             if not userprofile["protected"]:
                 tweets = getTimelineByID(int(userprofile['id']), max_results= 20)
