@@ -49,11 +49,11 @@ def mturk_result(mturk):
                 dictionary = {
                     "twitter_ID": row_list[0],
                     "profile_score1": int(list(json_object["profile_score1"].keys())
-                                          [list(json_object["profile_score1"].values()).index(True)]),
+                                        [list(json_object["profile_score1"].values()).index(True)]),
                     "profile_score2": int(list(json_object["profile_score2"].keys())
-                                          [list(json_object["profile_score2"].values()).index(True)]),
+                                        [list(json_object["profile_score2"].values()).index(True)]),
                     "tweet_score1":  int(list(json_object["tweet_score1"].keys())
-                                         [list(json_object["tweet_score1"].values()).index(True)]),
+                                        [list(json_object["tweet_score1"].values()).index(True)]),
                     "tweet_score2": int(list(json_object["tweet_score2"].keys())
                                         [list(json_object["tweet_score2"].values()).index(True)]),
                     "tweet_score3": int(list(json_object["tweet_score3"].keys())
