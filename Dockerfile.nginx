@@ -1,6 +1,10 @@
-ARG PASSWORD
-
 FROM nginx:1.19
+
+ARG PROXY=""
+ENV HTTP_PROXY $PROXY
+ENV HTTPS_PROXY $PROXY
+ENV http_proxy $PROXY
+ENV https_proxy $PROXY
 
 RUN apt-get update -y \
     && apt-get install -y apache2-utils \
