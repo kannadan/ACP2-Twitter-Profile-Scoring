@@ -4,6 +4,7 @@ import os.path
 import JSInjection
 from PIL import Image
 from selenium import webdriver
+from common.logger import logger
 
 
 class Html2Image:
@@ -18,10 +19,10 @@ class Html2Image:
 
     def get_image(self):
         if self.jscode is not None and isinstance(self.jscode, JSInjection.JSCode) and self.jscode.get_jscode != "":
-            # print(self.jsCode.getJSCode())
+            # logger.info(self.jsCode.getJSCode())
             self.browser.execute_script(self.jscode.get_jscode())
             for i in range(30):
-                # print(self.browser.title)
+                # logger.info(self.browser.title)
                 if self.jscode.finished_sign in self.browser.title:
                     break
                 time.sleep(10)
@@ -85,5 +86,5 @@ def save_tweet_image(user_id = 12, username = 'jack', tweetid = '146623829591499
                     h2i.save_image(h2i.get_element_image(
                         "#react-root > div > div > div.css-1dbjc4n.r-18u37iz.r-13qz1uu.r-417010 > main > div > div > div > div.css-1dbjc4n.r-14lw9ot.r-jxzhtn.r-1ljd8xs.r-13l2t4g.r-1phboty.r-1jgb5lz.r-11wrixw.r-61z16t.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div:nth-child(2) > section > div > div > div:nth-child(1) > div > div:nth-child(1)"), filepath)
                 except Exception as e:
-                    print("Tweet not Existed anymore")
+                    logger.error("Tweet not Existed anymore")
 

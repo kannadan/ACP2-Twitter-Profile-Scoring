@@ -8,6 +8,7 @@ import time
 from TwitterAPI import TwitterAPI, TwitterOAuth, TwitterRequestError, TwitterConnectionError
 from os.path import exists
 from datetime import datetime
+from common.logger import logger
 
 import tas.tokens as osenv
 
@@ -50,14 +51,14 @@ def getTimelineByID(id=2244994945, max_results = 100):
             if tweets.status_code == 200:
                 results = tweets.json()
                 if 'data' in results.keys():
-                    print(tweets.get_quota())
+                    logger.info(tweets.get_quota())
                     return results['data']
                 else:
                     return None
             else:
                 reset = int(tweets.headers['x-rate-limit-reset'])
                 reset = datetime.fromtimestamp(reset)
-                print("Sleep until:" + str(reset))
+                logger.info("Sleep until:" + str(reset))
                 nowt = datetime.now()
                 diff = reset - nowt
                 time.sleep(diff.total_seconds() + 2)
@@ -70,18 +71,18 @@ def getTimelineByID(id=2244994945, max_results = 100):
             #     count = count + 1
 
     except TwitterRequestError as e:
-        print('Request error')
-        print(e.status_code)
+        logger.info('Request error')
+        logger.info(e.status_code)
         for msg in iter(e):
-            print(msg)
+            logger.info(msg)
 
     except TwitterConnectionError as e:
-        print('Connection error')
-        print(e)
+        logger.info('Connection error')
+        logger.info(e)
 
     except Exception as e:
-        print('Exception')
-        print(e)
+        logger.info('Exception')
+        logger.info(e)
 
 
 def getUserById(id=2244994945):
@@ -95,31 +96,31 @@ def getUserById(id=2244994945):
             if user.status_code == 200:
                 results = user.json()
                 if 'data' in results.keys():
-                    print(user.get_quota())
+                    logger.info(user.get_quota())
                     return results['data']
                 else:
                     return None
             else:
                 reset = int(user.headers['x-rate-limit-reset'])
                 reset = datetime.fromtimestamp(reset)
-                print("Sleep until:" + str(reset))
+                logger.info("Sleep until:" + str(reset))
                 nowt = datetime.now()
                 diff = reset - nowt
                 time.sleep(diff.total_seconds() + 2)
 
     except TwitterRequestError as e:
-        print('Request error')
-        print(e.status_code)
+        logger.info('Request error')
+        logger.info(e.status_code)
         for msg in iter(e):
-            print(msg)
+            logger.info(msg)
 
     except TwitterConnectionError as e:
-        print('Connection error')
-        print(e)
+        logger.info('Connection error')
+        logger.info(e)
 
     except Exception as e:
-        print('Exception')
-        print(e)
+        logger.info('Exception')
+        logger.info(e)
 
 def getUserByName(name='jack'):
     try:
@@ -132,30 +133,30 @@ def getUserByName(name='jack'):
             if user.status_code == 200:
                 results = user.json()
                 if 'data' in results.keys():
-                    print(user.get_quota())
+                    logger.info(user.get_quota())
                     return results['data']
                 else:
                     return None
             else:                
                 reset = int(user.headers['x-rate-limit-reset'])
                 reset = datetime.fromtimestamp(reset)
-                print("Sleep until:" + str(reset))
+                logger.info("Sleep until:" + str(reset))
                 nowt = datetime.now()
                 diff = reset - nowt
                 time.sleep(diff.total_seconds() + 2)
     except TwitterRequestError as e:
-        print('Request error')
-        print(e.status_code)
+        logger.info('Request error')
+        logger.info(e.status_code)
         for msg in iter(e):
-            print(msg)
+            logger.info(msg)
 
     except TwitterConnectionError as e:
-        print('Connection error')
-        print(e)
+        logger.info('Connection error')
+        logger.info(e)
 
     except Exception as e:
-        print('Exception')
-        print(e)
+        logger.info('Exception')
+        logger.info(e)
 
 def getSingleUserByName(name='jack'):
     try:
@@ -168,7 +169,7 @@ def getSingleUserByName(name='jack'):
             if user.status_code == 200:
                 results = user.json()
                 if 'data' in results.keys():
-                    print(user.get_quota())
+                    logger.info(user.get_quota())
                     return results['data']
                 else:
                     return None
@@ -178,25 +179,25 @@ def getSingleUserByName(name='jack'):
                 return None
 
     except TwitterRequestError as e:
-        print('Request error')
-        print(e.status_code)
+        logger.info('Request error')
+        logger.info(e.status_code)
         for msg in iter(e):
-            print(msg)
+            logger.info(msg)
 
     except TwitterConnectionError as e:
-        print('Connection error')
-        print(e)
+        logger.info('Connection error')
+        logger.info(e)
 
     except Exception as e:
-        print('Exception')
-        print(e)
+        logger.info('Exception')
+        logger.info(e)
 
 
 
 def getFollowing(id=2244994945):
     try:
         api = get_api()
-        print(str(id))
+        logger.info(str(id))
         url = f'users/:{id}/following'
         params = {'max_results': 1000}
         # Get following
@@ -211,22 +212,22 @@ def getFollowing(id=2244994945):
             else:
                 reset = int(following.headers['x-rate-limit-reset'])
                 reset = datetime.fromtimestamp(reset)
-                print("Sleep until:" + str(reset))
+                logger.info("Sleep until:" + str(reset))
                 nowt = datetime.now()
                 diff = reset - nowt
                 time.sleep(diff.total_seconds() + 2)
 
 
     except TwitterRequestError as e:
-        print(e.status_code)
+        logger.info(e.status_code)
         for msg in iter(e):
-            print(msg)
+            logger.info(msg)
 
     except TwitterConnectionError as e:
-        print(e)
+        logger.info(e)
 
     except Exception as e:
-        print(e)
+        logger.info(e)
 
 
 idlistPath = 'idList2.txt'
@@ -268,7 +269,7 @@ def getIdListForCrawling():
                     if not userprofile["protected"]:
                         fo, quota = getFollowing(iterationUserIdList[i])
                         if not (fo is None and quota is None):
-                            print(quota)
+                            logger.info(quota)
                             temp = []
                             for f in fo:
                                 if not f['id'] in results:
@@ -281,7 +282,7 @@ def getIdListForCrawling():
 
         i = i + 1
         if i % 15 == 0:
-            print('writing to txt')
+            logger.info('writing to txt')
             fileObject = open(idlistPath, 'w')
             for id in results:
                 fileObject.write(str(id))
@@ -308,11 +309,11 @@ def crawlingProfiles():
             results = f.readlines()
             results = list(map(int, results))
         if len(results) == 0:
-            print('Empty file')
+            logger.info('Empty file')
         else:
             count = len(results)
             for index, id in enumerate(results):
-                print(str(id) + '    ' + str(index / count))
+                logger.info(str(id) + '    ' + str(index / count))
                 filepath = os.path.join(profilesBase, str(id))
                 if exists(filepath):
                     userprofile = getUserById(id)
@@ -333,10 +334,10 @@ def crawlingProfiles():
                                     remove(filepath)
 
                 else:
-                    print('Existed' + ' ' + str(id))
+                    logger.info('Existed' + ' ' + str(id))
 
     else:
-        print('no id list file')
+        logger.info('no id list file')
 
 def getProfileByUsername(name = 'jack'):
     userprofile = getUserByName(name)
@@ -359,4 +360,4 @@ def getSingleProfileByUsername(name = 'jack'):
 
 if __name__ == "__main__":
     #crawlingProfiles()
-    print(getProfileByUsername())
+    logger.info(getProfileByUsername())

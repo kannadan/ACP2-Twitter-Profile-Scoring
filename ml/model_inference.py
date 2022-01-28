@@ -16,8 +16,7 @@ def query_model(query_data):
     try:
         features = extract_all_features(query_data)
     except Exception as e:
-        print(f"Feature extraction failed: {e}")
-        return None
+        raise Exception(f"Feature extraction failed: {e}")
 
     del features['id']
 
