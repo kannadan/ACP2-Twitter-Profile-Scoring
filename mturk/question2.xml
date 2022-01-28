@@ -17,7 +17,7 @@
 			<br /><br /><br />
     	<table>
 			<tr>
-				<td><b>Very Trustworthy</b></td>
+				<td><b>Very Untrustworthy</b></td>
 				<td>
 					<input type="radio" name="profile_score1" value="1" required>1
 					<input type="radio" name="profile_score1" value="2" required>2
@@ -30,7 +30,7 @@
 					<input type="radio" name="profile_score1" value="9" required>9
 					<input type="radio" name="profile_score1" value="10" required>10
 				</td>
-				<td><b>Very Untrustworthy</b></td>
+				<td><b>Very Trustworthy</b></td>
 			</tr>
 		</table>
 			<p id="tip" style="visibility: hidden;"><font color="#FF0000">Please select one score</font></p>
@@ -47,7 +47,7 @@
 			<br /><br /><br />
     	<table>
 			<tr>
-				<td><b>Very Trustworthy</b></td>
+				<td><b>Very Untrustworthy</b></td>
 				<td>
 					<input type="radio" name="tweet_score1" value="1" required>1
 					<input type="radio" name="tweet_score1" value="2" required>2
@@ -60,7 +60,7 @@
 					<input type="radio" name="tweet_score1" value="9" required>9
 					<input type="radio" name="tweet_score1" value="10" required>10
 				</td>
-				<td><b>Very Untrustworthy</b></td>
+				<td><b>Very Trustworthy</b></td>
 			</tr>
 		</table>
 			<br /><br />
@@ -68,7 +68,7 @@
 			<br /><br /><br />
 		<table>
 			<tr>
-				<td><b>Very Trustworthy</b></td>
+				<td><b>Very Untrustworthy</b></td>
 				<td>
 					<input type="radio" name="tweet_score2" value="1" required>1
 					<input type="radio" name="tweet_score2" value="2" required>2
@@ -81,7 +81,7 @@
 					<input type="radio" name="tweet_score2" value="9" required>9
 					<input type="radio" name="tweet_score2" value="10" required>10
 				</td>
-				<td><b>Very Untrustworthy</b></td>
+				<td><b>Very Trustworthy</b></td>
 			</tr>
 		</table>
 			<br /><br />
@@ -89,7 +89,7 @@
 			<br /><br /><br />
 		<table>
 			<tr>
-				<td><b>Very Trustworthy</b></td>
+				<td><b>Very Untrustworthy</b></td>
 				<td>
 					<input type="radio" name="tweet_score3" value="1" required>1
 					<input type="radio" name="tweet_score3" value="2" required>2
@@ -102,7 +102,7 @@
 					<input type="radio" name="tweet_score3" value="9" required>9
 					<input type="radio" name="tweet_score3" value="10" required>10
 				</td>
-				<td><b>Very Untrustworthy</b></td>
+				<td><b>Very Trustworthy</b></td>
 			</tr>
 		</table>
 			<br /><br /><br />
@@ -111,7 +111,7 @@
 			<br /><br />
     	<table>
 			<tr>
-				<td><b>Very Trustworthy</b></td>
+				<td><b>Very Untrustworthy</b></td>
 				<td>
 					<input type="radio" name="profile_score2" value="1" required>1
 					<input type="radio" name="profile_score2" value="2" required>2
@@ -124,7 +124,7 @@
 					<input type="radio" name="profile_score2" value="9" required>9
 					<input type="radio" name="profile_score2" value="10" required>10
 				</td>
-				<td><b>Very Untrustworthy</b></td>
+				<td><b>Very Trustworthy</b></td>
 			</tr>
 		</table>
   		</div>

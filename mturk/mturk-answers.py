@@ -2,6 +2,7 @@ import boto3
 import csv
 import configparser
 import json
+import datetime
 from xml.dom.minidom import parseString
 
 
@@ -24,12 +25,14 @@ def mturk_conf():
 
 
 def mturk_result(mturk):
-    print("Reading from hits.txt, writting to answers.txt")
-    t = open("answers.txt", "a")
+    print("Reading from hits.txt, writing to answers.json")
+    t = open("answers.json", "a")
+    print(str(datetime.datetime.now()))
+    t.write('{"results %s": [' % (str(datetime.datetime.now())))
+    first = True
     with open("hits.txt", "r") as f:
         for row_list in csv.reader(f):
             response = mturk.list_assignments_for_hit(HITId=row_list[1], AssignmentStatuses=['Submitted', 'Approved'])
-
             assignments = response['Assignments']
             print('The number of submitted assignments for profile {} is {}'.format(row_list[0], len(assignments)))
             for assignment in assignments:
@@ -40,12 +43,9 @@ def mturk_result(mturk):
                 # the answer is a xml document. we pull out the value of the first
                 # //QuestionFormAnswers/Answer/FreeText
                 answer = answer_xml.getElementsByTagName('FreeText')[0]
-
                 # See https://stackoverflow.com/questions/317413
                 only_answer = " ".join(t.nodeValue for t in answer.childNodes if t.nodeType == t.TEXT_NODE)
-
                 json_object = json.loads(only_answer)[0]
-
                 dictionary = {
                     "twitter_ID": row_list[0],
                     "profile_score1": int(list(json_object["profile_score1"].keys())
@@ -63,8 +63,12 @@ def mturk_result(mturk):
                     "worker_id": worker_id,
                     "assignments": len(assignments)
                 }
+                if first:
+                    first = False
+                else:
+                    t.write(",\n")
 
-                t.write(json.dumps(dictionary, indent=4) + "\n")
+                t.write(json.dumps(dictionary))
 
                 # Approve the Assignment (if it hasn't already been approved)
                 if assignment['AssignmentStatus'] == 'Submitted':
@@ -74,7 +78,7 @@ def mturk_result(mturk):
                         RequesterFeedback='good',
                         OverrideRejection=False,
                     )
-            print(" ")
+    t.write("]}\n")
     t.close()
     f.close()
     return

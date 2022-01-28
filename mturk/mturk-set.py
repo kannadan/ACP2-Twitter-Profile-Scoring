@@ -28,7 +28,7 @@ def mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group):
 
     new_hit = client.create_hit(
         Title='How trustworthy Twitter profile is?',
-        Description='See twitter profile and tweets and select how trustworthy you think profile is',
+        Description='See twitter profile and tweets and select how trustworthy you think those are',
         Keywords='text, quick, labeling, Twitter',
         Reward='0.03',
         MaxAssignments=2,
@@ -47,7 +47,7 @@ def mturk_hits():
 
     group = 0
     t = open("hits.txt", "a")
-    with open("list.txt", "r") as f:
+    with open("Imagesaved_profile_idlist.txt", "r") as f:
         for line in f:
             # for link in csv.reader(f):
             line = line.rstrip('\n')
