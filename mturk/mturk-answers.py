@@ -4,7 +4,7 @@ import configparser
 import json
 import datetime
 from xml.dom.minidom import parseString
-
+from common.logger import logger
 
 def mturk_conf():
     keys = configparser.ConfigParser()
@@ -25,16 +25,16 @@ def mturk_conf():
 
 
 def mturk_result(mturk):
-    print("Reading from hits.txt, writing to answers.json")
+    logger.info("Reading from hits.txt, writing to answers.json")
     t = open("answers.json", "a")
-    print(str(datetime.datetime.now()))
+    logger.info(str(datetime.datetime.now()))
     t.write('{"results %s": [' % (str(datetime.datetime.now())))
     first = True
     with open("hits.txt", "r") as f:
         for row_list in csv.reader(f):
             response = mturk.list_assignments_for_hit(HITId=row_list[1], AssignmentStatuses=['Submitted', 'Approved'])
             assignments = response['Assignments']
-            print('The number of submitted assignments for profile {} is {}'.format(row_list[0], len(assignments)))
+            logger.info('The number of submitted assignments for profile {} is {}'.format(row_list[0], len(assignments)))
             for assignment in assignments:
                 worker_id = assignment['WorkerId']
                 assignment_id = assignment['AssignmentId']
@@ -72,7 +72,7 @@ def mturk_result(mturk):
 
                 # Approve the Assignment (if it hasn't already been approved)
                 if assignment['AssignmentStatus'] == 'Submitted':
-                    print('Approving Assignment {}'.format(assignment_id))
+                    logger.info('Approving Assignment {}'.format(assignment_id))
                     client.approve_assignment(
                         AssignmentId=assignment_id,
                         RequesterFeedback='good',

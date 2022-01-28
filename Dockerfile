@@ -1,5 +1,11 @@
 FROM python:3.9.9-slim
 
+ARG PROXY=""
+ENV HTTP_PROXY $PROXY
+ENV HTTPS_PROXY $PROXY
+ENV http_proxy $PROXY
+ENV https_proxy $PROXY
+
 RUN apt-get update && \
     apt-get install -y npm
 

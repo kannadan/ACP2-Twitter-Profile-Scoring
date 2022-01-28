@@ -4,6 +4,7 @@ import twitter_handler as th
 import os
 from dotenv import load_dotenv
 from ml.model_inference import query_model
+from common.logger import logger
 
 # ENVIRONMENT VARIABLES
 load_dotenv()
@@ -35,11 +36,15 @@ def get_profile_data():
         profile = th.get_profile(username)
 
         #score profile
-        score, explanations = query_model(profile)
-        profile["ml_output"] = {
-            "score": score,
-            "explanations": explanations
-        }
+        try:
+            score, explanations = query_model(profile)
+            profile["ml_output"] = {
+                "score": score,
+                "explanations": explanations
+            }
+        except Exception as e:
+            logger.error(f"Model query failed: {e}")
+            profile["ml_output"] = None
 
         #build response        
         response = jsonify(profile)
@@ -51,7 +56,7 @@ def get_profile_data():
 @app.route("/api/ProfileSearch", methods=['POST'])
 def search_profiles():    
     # parameters => search=<profile search term> application/x-www-form-urlencoded 
-    print(request.form.get("search"))
+    logger.info(request.form.get("search"))
     return jsonify([
         {"name": "person1", "id": 123},
         {"name": "person2", "id": 456}

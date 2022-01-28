@@ -1,6 +1,6 @@
 import boto3
 import configparser
-
+from common.logger import logger
 
 def mturk_conf():
     keys = configparser.ConfigParser()
@@ -42,7 +42,7 @@ def mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group):
 
 
 def mturk_hits():
-    print("Reading from list.txt, writing to hits.txt")
+    logger.info("Reading from list.txt, writing to hits.txt")
 
     group = 0
     t = open("hits.txt", "a")
@@ -65,8 +65,8 @@ def mturk_hits():
 
             new_hit = mturk_create_single_hit(ht1, ht2, ht3, ht4, ht5, line, group)
 
-            print("https://workersandbox.mturk.com/mturk/preview?groupId=" + new_hit['HIT']['HITGroupId'])
-            print("HITID = " + new_hit['HIT']['HITId'] + " (Use to Get Results)")
+            logger.info("https://workersandbox.mturk.com/mturk/preview?groupId=" + new_hit['HIT']['HITGroupId'])
+            logger.info("HITID = " + new_hit['HIT']['HITId'] + " (Use to Get Results)")
             t.write(line + ",")
             t.write(new_hit['HIT']['HITId'] + ",")
             t.write(new_hit['HIT']['HITGroupId'] + ",")

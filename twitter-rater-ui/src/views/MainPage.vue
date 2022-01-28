@@ -30,7 +30,7 @@
         data() {
             return {
                 searchTerm: "",
-                apiUrl: process.env.VUE_APP_API_URL
+                apiUrl: "/api/"
             }
         },
         methods: {
