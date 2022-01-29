@@ -34,22 +34,25 @@ def get_profile_data():
     if username != None:
         # fetch profile data from twitter api        
         profile = th.get_profile(username)
+        print(profile)
+        if profile != None:
+            #score profile
+            try:
+                score, explanations = query_model(profile)
+                profile["ml_output"] = {
+                    "score": score,
+                    "explanations": explanations
+                }
+            except Exception as e:
+                logger.error(f"Model query failed: {e}")
+                profile["ml_output"] = None
 
-        #score profile
-        try:
-            score, explanations = query_model(profile)
-            profile["ml_output"] = {
-                "score": score,
-                "explanations": explanations
-            }
-        except Exception as e:
-            logger.error(f"Model query failed: {e}")
-            profile["ml_output"] = None
-
-        #build response        
-        response = jsonify(profile)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return response 
+            #build response        
+            response = jsonify(profile)
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response 
+        else:
+            return "Username not given", 404    
     else: 
         return "Username not given", 400
 

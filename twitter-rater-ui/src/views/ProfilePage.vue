@@ -8,9 +8,9 @@
                 <v-card elevation="2" >
                     <v-row>
                         <v-img
-                        class="ma-4 profile-pic"
-                        max-height="250"
-                        max-width="250"
+                        class="my-8 mx-16 profile-pic"
+                        max-height="75"
+                        max-width="75"
                         :src="profile_pic"
                         ></v-img>
                         <v-col class="ma-4" align="left">
@@ -35,41 +35,48 @@
                             <h2>Total score:</h2>
                         </v-col>
                         <v-col align="right">
-                            <h2>{{ scores.score }}</h2>
+                            <h2>{{ scores.score }}/5</h2>
                         </v-col>
                     </v-row>
                     <v-divider class="mx-16"></v-divider>
-                    <v-row class="mx-16 mt-8">
-                        <v-col align="left">    
-                            <h1>Positives</h1>
-                        </v-col>
-                    </v-row>
-                    <div v-for="(score, index) in scores.positives" :key="index">
-                        <v-row class="mx-16" >
-                            <v-col align="left">
-                                <h2>{{ score.name }}</h2>
-                            </v-col>
-                            <v-col align="right">
-                                <h2>{{ score.contribution }}</h2>
+                    <div v-if="showPartial">
+                         <v-row class="my-8">
+                            <v-col>
+                                <h3>Parial scores are calculated separetely from total score to show points of improvement</h3>
+                            </v-col>                            
+                        </v-row>
+                        <v-row class="mx-16 mt-8 green-text">
+                            <v-col align="left">    
+                                <h1 color="green">Positives</h1>
                             </v-col>
                         </v-row>
-                        <v-divider class="mx-16"></v-divider>
-                    </div>
-                    <v-row class="mx-16 mt-8">
-                        <v-col align="left">    
-                            <h1>Negatives</h1>
-                        </v-col>
-                    </v-row>
-                    <div v-for="(score, index) in scores.negatives" :key="index + 3">
-                        <v-row class="mx-16" >
-                            <v-col align="left">
-                                <h2>{{ score.name }}</h2>
-                            </v-col>
-                            <v-col align="right">
-                                <h2>{{ score.contribution }}</h2>
+                        <div v-for="(score, index) in scores.positives" :key="index" class="green-text">
+                            <v-row class="mx-16" >
+                                <v-col align="left">
+                                    <h2>{{ score.name }}</h2>
+                                </v-col>
+                                <v-col align="right">
+                                    <h2>{{ score.contribution }}</h2>
+                                </v-col>
+                            </v-row>
+                            <v-divider class="mx-16"></v-divider>
+                        </div>
+                        <v-row class="mx-16 mt-8 red-text">
+                            <v-col align="left">    
+                                <h1>Negatives</h1>
                             </v-col>
                         </v-row>
-                        <v-divider class="mx-16"></v-divider>
+                        <div v-for="(score, index) in scores.negatives" :key="index + 3" class="red-text">
+                            <v-row class="mx-16" >
+                                <v-col align="left">
+                                    <h2>{{ score.name }}</h2>
+                                </v-col>
+                                <v-col align="right">
+                                    <h2>{{ score.contribution }}</h2>
+                                </v-col>
+                            </v-row>
+                            <v-divider class="mx-16"></v-divider>
+                        </div>
                     </div>
                 </v-card> 
                 <v-row class="mt-16">
@@ -100,6 +107,7 @@ import { Tweet } from 'vue-tweet-embed'
             return {
                 profile: {},                
                 profile_pic_static: require('@/assets/profile_default.jpg'),
+                showPartial: true
             }
         },
         computed: {
@@ -144,6 +152,13 @@ import { Tweet } from 'vue-tweet-embed'
 <style lang="scss" scoped>
 .profile-pic {
   border-radius: 50%;
+}
+
+.green-text {
+    color: green
+}
+.red-text {
+    color: red
 }
 
 </style>
