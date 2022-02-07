@@ -1,10 +1,14 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, Response
 import db
 import twitter_handler as th
 import os
 from dotenv import load_dotenv
 from ml.model_inference import query_model
 from common.logger import logger
+from flask_cors import CORS
+import csv
+import os.path
+
 
 # ENVIRONMENT VARIABLES
 load_dotenv()
@@ -16,6 +20,7 @@ app = Flask(__name__,
             static_folder="twitter-rater-ui/dist",
             template_folder='./twitter-rater-ui/dist')
 app.config["DEBUG"] = True
+CORS(app)
 
 test_profile = {
     "name": "Test user",
@@ -56,14 +61,30 @@ def get_profile_data():
     else: 
         return "Username not given", 400
 
-@app.route("/api/ProfileSearch", methods=['POST'])
-def search_profiles():    
-    # parameters => search=<profile search term> application/x-www-form-urlencoded 
-    logger.info(request.form.get("search"))
-    return jsonify([
-        {"name": "person1", "id": 123},
-        {"name": "person2", "id": 456}
-    ])
+@app.route("/api/SaveResults", methods=['POST'])
+def post_user_session():        
+    print("GOT SAVE DATA")
+    content = request.json
+    print(content["userId"])
+    write_to_file(content)
+
+    resp = Response('{}', status=201)
+    resp.headers["Content-type"] = "application/json"
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    print(resp.headers)
+    return resp
+
+def write_to_file(profile):
+    log_headers = ["User Id", "Twitter username", "Twitter id", "Evaluation Score"]
+    data = [profile["userId"], profile["username"], profile["id"], profile["ml_output"]["score"]]
+    headers = False
+    if os.path.isfile('UserLogs.csv'):
+        headers = True
+    with open('UserLogs.csv', 'a') as file:
+        writer = csv.writer(file)
+        if not headers:
+            writer.writerow(log_headers)    
+        writer.writerow(data)
 
 if __name__ == "__main__":        
     app.run(host='0.0.0.0')

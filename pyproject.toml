@@ -19,6 +19,7 @@ treeinterpreter = "^0.2.3"
 boto3 = "^1.20.34"
 nltk = "^3.6.7"
 TwitterAPI = "^2.7.11"
+Flask-Cors = "^3.0.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -80,7 +80,7 @@
                     </div>
                 </v-card> 
                 <v-row class="mt-16">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScK4zOm5n0znSx1sM4Wg6wFG88FMqfjDvaN60vzV6NQVLNjTQ/viewform?usp=pp_url&entry.786300512=123456789">
+                    <a :href="feedbackLink" @click.prevent="feedbackClick">
                         <h1>Please give feedback</h1>
                     </a>
                 </v-row>
@@ -92,6 +92,7 @@
                 </div>
             </v-col>
         </v-row>
+        
 
     </v-container>
 </template>
@@ -105,9 +106,44 @@ import { Tweet } from 'vue-tweet-embed'
         },
         data() {
             return {
-                profile: {},                
+                apiUrl: process.env.VUE_APP_API_URL,
+                profile: {},
                 profile_pic_static: require('@/assets/profile_default.jpg'),
-                showPartial: true
+                showPartial: false,
+                feedbackLink: "https://docs.google.com/forms/d/e/1FAIpQLScK4zOm5n0znSx1sM4Wg6wFG88FMqfjDvaN60vzV6NQVLNjTQ/viewform?usp=pp_url&entry.786300512=",
+                userId: 0,
+                requestOptions: {
+                    method: "POST",
+                    // mode: 'no-cors',
+                    headers: { "Content-Type": "application/json",
+                                "Accept": "application/json",
+                                "Access-Control-Allow-Origin": "*" ,
+                                "Access-Control-Allow-Credentials": "true",
+                                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"},
+                    body: ''
+                }
+            }
+        },
+        methods: {
+            listenForFocusFilterShortcut (event) {
+                if (event.keyCode === 74 && event.altKey) {
+                    this.showPartial = !this.showPartial
+                } 
+            },
+            feedbackClick(){
+                console.log("CLICK")
+                this.profile.userId = this.userId
+                this.requestOptions.body = JSON.stringify(this.profile)
+                fetch(this.apiUrl + "SaveResults", this.requestOptions)
+                    .then(response => {
+                        console.log(response)
+                        if(response.status == 201)
+                            window.location.href = this.feedbackLink
+                        
+                    })
+                    .catch((e) => {
+                        console.log("Error", e)
+                    });
             }
         },
         computed: {
@@ -145,6 +181,18 @@ import { Tweet } from 'vue-tweet-embed'
         },
         created(){
             this.profile = this.$store.state.profile
+            if(Object.keys(this.profile).length === 0 ){                
+                this.$router.push({ name: 'Main'})
+            }
+            this.userId = new Date().getTime()
+            this.feedbackLink = this.feedbackLink + this.userId
+            window.addEventListener(
+                'keyup',
+                this.listenForFocusFilterShortcut
+            )
+        },
+        beforeDestroy(){
+            window.removeEventListener('keyup', this.listenForFocusFilterShortcut);            
         }
     }
 </script>
