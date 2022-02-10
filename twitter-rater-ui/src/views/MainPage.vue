@@ -1,16 +1,19 @@
 <template>
     <v-container >
         <v-row justify="center" align="top" class="my-16">
-            <h1>Twitter profile evaluator</h1>                                
+            <h1>How credible are you?</h1>                                
         </v-row>            
         <v-container fill-height fluid>
             <v-row align="center" justify="center">
                 <v-col md="4">
-                    <p>Analyze credibility of a Twitter profiles using state-of-the-art machine learning system. After evaluation, please take a minute to fill the provided feedback form.</p>
+                    <h3>Disclaimer</h3>
+                    <h4>By proceeding to use this application, you consent to being a subject in a study by team of researchers from University of Oulu.</h4>
+                    <p>Use this tool to analyze credibility of your Twitter profile. Type your Twitter username as shown by the instruction image and press "Evaluate profile". Afterwards, please fill the provided questionnaire form, your input will be very appreciated!</p>
                     <v-text-field
                         v-model="searchTerm"
                         label="Profile name"
-                        outlined                        
+                        outlined
+                        @keydown.enter.prevent="getProfile"                    
                         >
                     </v-text-field>
                     <v-expand-transition>

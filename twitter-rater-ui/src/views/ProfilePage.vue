@@ -39,7 +39,7 @@
                         </v-col>
                     </v-row>
                     <v-divider class="mx-16"></v-divider>
-                    <div v-if="showPartial">
+                    <div>
                          <v-row class="my-8">
                             <v-col>
                                 <h3>Parial scores are calculated separetely from total score to show points of improvement</h3>
@@ -55,7 +55,7 @@
                                 <v-col align="left">
                                     <h2>{{ score.name }}</h2>
                                 </v-col>
-                                <v-col align="right">
+                                <v-col align="right" v-if="showPartial">
                                     <h2>{{ score.contribution }}</h2>
                                 </v-col>
                             </v-row>
@@ -71,7 +71,7 @@
                                 <v-col align="left">
                                     <h2>{{ score.name }}</h2>
                                 </v-col>
-                                <v-col align="right">
+                                <v-col align="right" v-if="showPartial">
                                     <h2>{{ score.contribution }}</h2>
                                 </v-col>
                             </v-row>
@@ -86,8 +86,11 @@
                 </v-row>
             </v-col>
             <v-col md=5>
-                <div v-for="(tweet, index) in tweets" :key="index">
+                <div v-if="pinnedTweet">
                     <h3 v-if="index == 0" align="left">Pinned</h3>
+                    <Tweet :id="pinnedTweet" :options="{conversation : 'None', cards: 'hidden'}"></Tweet>
+                </div>
+                <div v-for="(tweet, index) in tweets" :key="index">
                     <Tweet :id="tweet" :options="{conversation : 'None', cards: 'hidden'}"></Tweet>
                 </div>
             </v-col>
@@ -165,12 +168,15 @@ import { Tweet } from 'vue-tweet-embed'
             following(){
                 return this.profile ? this.profile.public_metrics.following_count : 0
             },
+            pinnedTweet(){
+                return this.profile?.pinned_tweet_id
+            },
             tweets(){
                 let temp = []
-                if(this.profile){
-                    temp.push(this.profile.pinned_tweet_id)
+                if(this.profile){                    
                     for(let i = 0; i < 3; i++){
-                        temp.push(this.profile.tweets[i].id)
+                        if(this.profile.tweets[i])
+                            temp.push(this.profile.tweets[i].id)
                     }
                 }
                 return temp
