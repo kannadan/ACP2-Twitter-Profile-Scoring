@@ -4,7 +4,7 @@ nltk.download([
     "vader_lexicon"
 ])
 from nltk.sentiment import SentimentIntensityAnalyzer
-from common.logger import logger
+#from common.logger import logger
 
 def extract_all_features(profile):
     metrics = profile["public_metrics"]
@@ -88,14 +88,14 @@ def get_tweet_features(profile):
         return False
     tweet_count = len(tweets)
     return {
-        "tweet.length_mean": total_tweet_len / own_tweet_count,
-        "tweet.words_mean": total_tweet_words / own_tweet_count,
-        "tweet.retweets_mean": total_retweet_count / own_tweet_count,
-        "tweet.replies_mean": total_reply_count / own_tweet_count,
-        "tweet.likes_mean": total_like_count / own_tweet_count,
-        "tweet.quotes_mean": total_quote_count / own_tweet_count,
-        "tweet.mentions_mean": total_mentions_count / own_tweet_count,
-        "tweet.retweets_percentage": retweet_count / tweet_count,
+        "tweet.length": total_tweet_len / own_tweet_count,
+        "tweet.words": total_tweet_words / own_tweet_count,
+        "tweet.retweets": total_retweet_count / own_tweet_count,
+        "tweet.replies": total_reply_count / own_tweet_count,
+        "tweet.likes": total_like_count / own_tweet_count,
+        "tweet.quotes": total_quote_count / own_tweet_count,
+        "tweet.mentions": total_mentions_count / own_tweet_count,
+        "tweet.retweets_ratio": retweet_count / tweet_count,
         "tweet.sentiment.total": sentiments["compound"] / tweet_count,
         "tweet.sentiment.pos": sentiments["pos"] / tweet_count,
         "tweet.sentiment.neg": sentiments["neg"] / tweet_count,
@@ -129,7 +129,7 @@ def validate_profiles(profiles):
         validation_result, validation_reason = validate_profile(profile)
         if validation_result:
             validated_profiles.append(profile)
-    logger.info(f"Filtered out {len(profiles) - len(validated_profiles)} profiles")
+    #logger.info(f"Filtered out {len(profiles) - len(validated_profiles)} profiles")
     return validated_profiles
 
 

@@ -5,7 +5,7 @@ import random
 import py7zr
 import csv
 from feature_extractor import extract_all_features, validate_profiles
-from common.logger import logger
+#from common.logger import logger
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -54,11 +54,11 @@ def add_labels(df_data):
             score_mean = sum(scores) / len(scores)
             profile['credibility_score'] = score_mean
             labeled_data.append(profile)
-    logger.info(f"Labeled dataset size: {len(labeled_data)}")
+    #logger.info(f"Labeled dataset size: {len(labeled_data)}")
     return labeled_data
 
 def read_all_profile_jsons():
-    logger.info("Reading profile JSONs")
+    #logger.info("Reading profile JSONs")
     jsons_path = unzip_profile_jsons()
     profiles = []
     for filename in os.listdir(jsons_path):
@@ -71,7 +71,7 @@ def read_all_profile_jsons():
 
 def get_random_profiles(num=50):
     all_profiles = read_all_profile_jsons()
-    logger.info(f"Choosing {num} profiles from total of {len(all_profiles)} profiles")
+    #logger.info(f"Choosing {num} profiles from total of {len(all_profiles)} profiles")
     selected_profiles = random.sample(all_profiles, num)
 
     csv_data = [["profile_id", "profile_url", "credibility"]]
@@ -83,7 +83,7 @@ def get_random_profiles(num=50):
         writer = csv.writer(csvfile, delimiter=",", quotechar="'", quoting=csv.QUOTE_MINIMAL)
         for csv_row in csv_data:
             writer.writerow(csv_row)
-    logger.info("Done")
+    #logger.info("Done")
 
 def unzip_profile_jsons():
     jsons_path = os.path.join(DIR_PATH, "data", "twitter_profiles")

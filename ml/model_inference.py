@@ -75,28 +75,42 @@ def select_explanations(feature_contrs, count_per_type=3):
 
 
 def get_feature_human_name(feature_name):
-    if feature_name == "tweet.replies_mean":
-        return "Amount of replies to tweets"
-    elif feature_name == "tweet.mentions_mean":
-        return "Amount of mentions in tweets"
+    if feature_name == "tweet.replies":
+        return "Amount of replies to your tweets"
+    elif feature_name == "tweet.mentions":
+        return "Amount of mentions (@) in your tweets"
+    elif feature_name == "tweet.likes":
+        return "Amount of likes to your tweets"
+    elif feature_name == "tweet.retweets_by_others":
+        return "Amount of retweets for your tweets"
+    elif feature_name == "tweet.retweets_ratio":
+        return "Ratio of retweets to your own tweets"
+    elif feature_name == "tweet.quotes":
+        return "Ratio of quote tweets (commented retweets) to your own tweets"
     elif feature_name == "created_at":
-        return "Profile age"
+        return "Age of your profile"
     elif feature_name == "name_len":
-        return "Profile name"
+        return "Length of your profile name"
     elif feature_name == "tweet_count":
         return "Amount of tweets posted"
     elif feature_name == "following_followers_ratio":
-        return "Followers"
-    elif feature_name == "tweet.length_mean":
-        return "Tweet length"
+        return "Amount of followers"
+    elif feature_name == "tweet.length":
+        return "Average length of your tweets"
     elif feature_name == "desc_words":
-        return "Profile description"
+        return "Length of your profile description"
     elif feature_name == "verified":
         return "Verified profile status"
     elif feature_name == "listed_count":
         return "Appearance of profile in public lists"
-    elif feature_name.startswith("tweet.sentiment."):
-        return "Sentiment of tweets"
+    elif feature_name == "tweet.sentiment.pos":
+        return "Use of positive words in your tweets"
+    elif feature_name == "tweet.sentiment.neg":
+        return "Use of negative words in your tweets"
+    elif feature_name == "tweet.sentiment.neu":
+        return "Use of neutral words in your tweets"
+    elif feature_name == "tweet.sentiment.total":
+        return "Sentiment in your tweets"
 
 
 if __name__ == '__main__':

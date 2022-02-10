@@ -9,6 +9,15 @@ Install packages:
 $ poetry install
 ```
 
+### Start the application
+```shell
+$ ./start.sh
+```
+or
+```shell
+$ ./build.sh
+$ docker-compose up
+```
 ## Deployment
 Add your publish SSH key as authorized key to the target host.
 
