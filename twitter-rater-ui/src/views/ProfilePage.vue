@@ -42,7 +42,7 @@
                     <div>
                          <v-row class="my-8">
                             <v-col>
-                                <h3>Parial scores are calculated separetely from total score to show points of improvement</h3>
+                                <h3>The following properties had the greatest effect on your score. Positives increased the score, while negatives decreased the score.</h3>
                             </v-col>                            
                         </v-row>
                         <v-row class="mx-16 mt-8 green-text">

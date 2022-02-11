@@ -102,7 +102,7 @@ def get_feature_human_name(feature_name):
     elif feature_name == "verified":
         return "Verified profile status"
     elif feature_name == "listed_count":
-        return "Appearance of profile in public lists"
+        return "Appearance of your profile in public lists"
     elif feature_name == "tweet.sentiment.pos":
         return "Use of positive words in your tweets"
     elif feature_name == "tweet.sentiment.neg":
