@@ -7,7 +7,7 @@
             <v-row align="center" justify="center">
                 <v-col md="4">
                     <h3>Disclaimer</h3>
-                    <h4>By proceeding to use this application, you consent to being a subject in a study by team of researchers from University of Oulu.</h4>
+                    <h4>By proceeding to use this application, you consent to being a subject in a study by team of researchers from University of Oulu. Your Twitter information (only public accounts), results, and feedback will be stored. The collected Twitter information is limited to public data available via Twitter API. The stored data will be deleted after the study.</h4>
                     <p>Use this tool to analyze credibility of your Twitter profile. Type your Twitter username as shown by the instruction image and press "Evaluate profile". Afterwards, please fill the provided questionnaire form, your input will be very appreciated!</p>
                     <v-text-field
                         v-model="searchTerm"
