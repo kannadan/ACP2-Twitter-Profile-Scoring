@@ -3,6 +3,7 @@ import csv
 import configparser
 import json
 import datetime
+import time
 from xml.dom.minidom import parseString
 from common.logger import logger
 
@@ -32,6 +33,7 @@ def mturk_result(mturk):
     first = True
     with open("hits.txt", "r") as f:
         for row_list in csv.reader(f):
+            time.sleep(1) # to prevent "ThrottlingException": Rate exceeded
             response = mturk.list_assignments_for_hit(HITId=row_list[1], AssignmentStatuses=['Submitted', 'Approved'])
             assignments = response['Assignments']
             logger.info('The number of submitted assignments for profile {} is {}'.format(row_list[0], len(assignments)))
@@ -84,5 +86,6 @@ def mturk_result(mturk):
     return
 
 
-client = mturk_conf()
-mturk_result(client)
+if __name__ == "__main__":
+    client = mturk_conf()
+    mturk_result(client)
