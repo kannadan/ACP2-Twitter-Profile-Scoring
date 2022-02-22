@@ -14,17 +14,27 @@ def get_dataset():
     df = pd.DataFrame()
     df_data = []
     profiles = read_all_profile_jsons()
+    scores = get_score_labels()
+    profiles = [p for p in profiles if p['id'] in scores]
     for profile in profiles:
         features = extract_all_features(profile)
         if features:
+            features['credibility_score'] = scores[profile['id']]
             df_data.append(features)
-
-    df_data = add_labels(df_data)
     df = pd.DataFrame(data=df_data)
     return df
 
 
-def add_labels(df_data):
+def get_score_labels():
+    scores_by_profile = get_mturk_scores()
+    #scores_by_profile = get_self_scores()
+    score_by_profile = {}
+    for profile_id, scores in scores_by_profile.items():
+        score_by_profile[profile_id] = sum(scores) / len(scores)
+    return score_by_profile
+
+
+def get_self_scores():
     labels_dir = os.path.join(DIR_PATH, "data", "labels")
     scores_by_profile = {}
 
@@ -42,20 +52,26 @@ def add_labels(df_data):
                         credibility_score = int(row[2])
                     except ValueError:
                         continue
-                    if profile_id not in scores_by_profile:
-                        scores_by_profile[profile_id] = [credibility_score]
-                    else:
-                        scores_by_profile[profile_id].append(credibility_score)
+                    scores = scores_by_profile.get(profile_id, [])
+                    scores.append(credibility_score)
+                    scores_by_profile[profile_id] = scores
+    return scores_by_profile
 
-    labeled_data = []
-    for profile in df_data:
-        scores = scores_by_profile.get(profile['id'])
-        if scores:
-            score_mean = sum(scores) / len(scores)
-            profile['credibility_score'] = score_mean
-            labeled_data.append(profile)
-    #logger.info(f"Labeled dataset size: {len(labeled_data)}")
-    return labeled_data
+
+def get_mturk_scores():
+    labels_json = os.path.join(DIR_PATH, "data", "mturk_answers.json")
+    with open(labels_json) as f:
+        answers = json.load(f)
+    answers = list(answers.values())[0]
+    scores_by_profile = {}
+    for answer in answers:
+        profile_id = answer["twitter_ID"]
+        credibility_score = answer["profile_score2"]
+        scores = scores_by_profile.get(profile_id, [])
+        scores.append(credibility_score)
+        scores_by_profile[profile_id] = scores
+    return scores_by_profile
+
 
 def read_all_profile_jsons():
     #logger.info("Reading profile JSONs")
