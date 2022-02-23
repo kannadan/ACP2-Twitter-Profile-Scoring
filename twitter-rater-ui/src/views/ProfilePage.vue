@@ -93,6 +93,9 @@
                 <div v-for="(tweet, index) in tweets" :key="index">
                     <Tweet :id="tweet" :options="{conversation : 'None', cards: 'hidden'}"></Tweet>
                 </div>
+                <div v-if="!tweets && !pinnedTweet">
+                    <h3 align="left">This user has no tweets. This may affect evaluation</h3>
+                </div>
             </v-col>
         </v-row>
         
@@ -169,11 +172,11 @@ import { Tweet } from 'vue-tweet-embed'
                 return this.profile ? this.profile.public_metrics.following_count : 0
             },
             pinnedTweet(){
-                return this.profile?.pinned_tweet_id
+                return this.profile?.pinned_tweet_id ? this.profile?.pinned_tweet_id : null
             },
             tweets(){
                 let temp = []
-                if(this.profile){                    
+                if(this.profile?.tweets){                    
                     for(let i = 0; i < 3; i++){
                         if(this.profile.tweets[i])
                             temp.push(this.profile.tweets[i].id)
@@ -182,7 +185,7 @@ import { Tweet } from 'vue-tweet-embed'
                 return temp
             },
             scores(){
-                return this.profile ? {...this.profile.ml_output.explanations, score: this.profile.ml_output.score} : {}
+                return this.profile?.ml_output ? {...this.profile.ml_output.explanations, score: this.profile.ml_output.score} : {score: 0}
             },
         },
         created(){

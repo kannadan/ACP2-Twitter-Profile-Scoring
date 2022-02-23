@@ -22,7 +22,7 @@
                         dark
                         v-if="error"
                         >
-                            User profile was not found. Check your spelling or try another account
+                            User profile was not found or it was unsuitable for evaluation. Check your spelling or try another account
                         </v-alert>
                     </v-expand-transition>
                     <v-btn color="primary" @click="getProfile" style="width: 185px" :disabled="loading">
@@ -63,7 +63,7 @@
                             console.log("response", response)
                             return response.json()
                         })
-                        .then((data) => {                 
+                        .then((data) => {                                      
                             if(data){
                                 this.$store.commit('setProfile', data)                            
                                 this.$router.push("Profile")
@@ -78,9 +78,12 @@
                         })
                 } else
                     this.error = true
+            },
+            verifyData(profile){
+                return !!profile && !!profile.ml_output
             }
-        },
     }
+}
 </script>
 
 <style lang="scss" scoped>
