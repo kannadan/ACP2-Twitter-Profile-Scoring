@@ -35,7 +35,7 @@
 		</table>
 			<p id="tip" style="visibility: hidden;"><font color="#FF0000">Please select one score</font></p>
 		<crowd-button id = "showNext">
-    		Show Next
+    		Show Tweets
 		</crowd-button>
   		</div>
 
@@ -128,7 +128,21 @@
 			</tr>
 		</table>
   		</div>
-
+	    <full-instructions header="Twitter profile trustworthiness analysis">
+	    <p>In this task the idea is to evaluate the trustworthiness of Twitter profiles</p>
+	    <p>Trustworthiness is objective. See images and read texts. Choose how trustworthy profile feels.</p>
+	    <p>You'll only see the profile first, rate it, and click the "View Tweets" button. Three tweets will appear.</p>
+	    <p>Then rate each Tweet and finally the combination of tweets and Profile.</p>
+	    <p>One task will take 30 - 50 seconds. Do not submit task faster than 15 second or it may be rejected.</p>
+	    <p>Mturk IDs are collected but will not be published and will be deleted after result is evaluated.</p>
+	    <p>This rating data is collected to train AI to evaluate twitter profiles.</p>
+	    </full-instructions>
+	    <short-instructions>
+	     On scale 1 to 10, choose how much you trust shown Twitter profile and three tweets.
+	     A total 5 selections must be made in one task: one for profile and each Tweet separately and one for whole set.
+	     Please see and read each profile and tweet carefully.
+	     Too fast submits may be rejected (less than 15 second total).
+	    </short-instructions>
 	</crowd-form>
 	</div>
   </body>
