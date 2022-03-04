@@ -21,11 +21,9 @@ def query_model(query_data):
     del features['id']
 
     model = pickle.load(open(os.path.join(DIR_PATH, "model", "model.pkl"), 'rb'))
-    scaler = pickle.load(open(os.path.join(DIR_PATH, "model", "scaler.pkl"), 'rb'))
 
     df = pd.DataFrame(data=[features])
-    scaled_data = scaler.transform(df)
-    prediction, explanations = get_prediction(model, scaled_data)
+    prediction, explanations = get_prediction(model, df)
     return prediction, explanations
 
 def get_prediction(model, df):
