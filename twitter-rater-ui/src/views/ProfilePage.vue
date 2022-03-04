@@ -35,7 +35,7 @@
                             <h2>Total score:</h2>
                         </v-col>
                         <v-col align="right">
-                            <h2>{{ scores.score }}/5</h2>
+                            <h2>{{ scores.score }}/10</h2>
                         </v-col>
                     </v-row>
                     <v-divider class="mx-16"></v-divider>
