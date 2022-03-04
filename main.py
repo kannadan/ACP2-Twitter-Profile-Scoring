@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template, Response
-import db
 import twitter_handler as th
 import os
 from dotenv import load_dotenv
@@ -39,7 +38,7 @@ def get_profile_data():
     if username != None:
         # fetch profile data from twitter api        
         profile = th.get_profile(username)
-        print(profile)
+        logger.info(profile)
         if profile != None:
             #score profile
             try:
@@ -65,22 +64,24 @@ def get_profile_data():
 def post_user_session():        
     print("GOT SAVE DATA")
     content = request.json
-    print(content["userId"])
+    logger.info(content["userId"])
     write_to_file(content)
 
     resp = Response('{}', status=201)
     resp.headers["Content-type"] = "application/json"
     resp.headers["Access-Control-Allow-Origin"] = "*"
-    print(resp.headers)
+    logger.info(resp.headers)
     return resp
 
 def write_to_file(profile):
+    csv_path = os.path.join(os.sep, "data", "UserLogs.csv")
+    logger.info(f"Writing to {csv_path}")
     log_headers = ["User Id", "Twitter username", "Twitter id", "Evaluation Score"]
     data = [profile["userId"], profile["username"], profile["id"], profile["ml_output"]["score"]]
     headers = False
-    if os.path.isfile('UserLogs.csv'):
+    if os.path.isfile(csv_path):
         headers = True
-    with open('UserLogs.csv', 'a') as file:
+    with open(csv_path, 'a') as file:
         writer = csv.writer(file)
         if not headers:
             writer.writerow(log_headers)    

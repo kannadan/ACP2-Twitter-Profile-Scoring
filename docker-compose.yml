@@ -8,6 +8,8 @@ services:
       - 5000
     environment:
       - FLASK_ENV=Production
+    volumes:
+      - ./data:/data
   nginx:
     container_name: twitter-profile-scoring-proxy
     restart: unless-stopped
