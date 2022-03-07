@@ -3,7 +3,10 @@
         <v-row justify="center" align="start">            
                 <h1>{{ username }}</h1>                            
         </v-row>
-        <v-row justify="center" class="mt-16" fill-height>
+        <v-row justify="center" align="start">            
+                <p>Your credibility score was computed using a simple Machine Learning algorithm that takes into account several factors of your profile, and also incorporates your latest tweets as input.</p>                            
+        </v-row>
+        <v-row justify="center" class="mt-8" fill-height>
             <v-col md=5 class="mt-6">
                 <v-card elevation="2" >
                     <v-row>
@@ -80,9 +83,13 @@
                     </div>
                 </v-card> 
                 <v-row class="mt-16">
-                    <a :href="feedbackLink" @click.prevent="feedbackClick">
-                        <h1>Please give feedback</h1>
-                    </a>
+                    <v-col align="left">
+                        <a :href="feedbackLink" @click.prevent="feedbackClick">
+                            <h1>Fill in the final questionnaire</h1>
+                        </a>
+                        <p class="">By filling in the questionnaire, you will help researchers. We will also raffle a $20 Amazon gift card among the participants.</p>
+
+                    </v-col>
                 </v-row>
             </v-col>
             <v-col md=5>
@@ -93,7 +100,7 @@
                 <div v-for="(tweet, index) in tweets" :key="index">
                     <Tweet :id="tweet" :options="{conversation : 'None', cards: 'hidden'}"></Tweet>
                 </div>
-                <div v-if="!tweets && !pinnedTweet">
+                <div v-if="(!tweets || tweets.length == 0) && !pinnedTweet">
                     <h3 align="left">This user has no tweets. This may affect evaluation</h3>
                 </div>
             </v-col>
@@ -144,7 +151,7 @@ import { Tweet } from 'vue-tweet-embed'
                     .then(response => {
                         console.log(response)
                         if(response.status == 201)
-                            window.location.href = this.feedbackLink
+                            window.open(this.feedbackLink, '_blank');                            
                         
                     })
                     .catch((e) => {

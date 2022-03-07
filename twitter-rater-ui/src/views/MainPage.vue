@@ -1,14 +1,12 @@
 <template>
     <v-container >
         <v-row justify="center" align="top" class="my-16">
-            <h1>How credible are you?</h1>                                
+            <h1>Evaluate your Twitter profile credibility!</h1>                                
         </v-row>            
         <v-container fill-height fluid>
             <v-row align="center" justify="center">
                 <v-col md="4">
-                    <h3>Disclaimer</h3>
-                    <h4>By proceeding to use this application, you consent to being a subject in a study by team of researchers from University of Oulu. Your Twitter information (only public accounts), results, and feedback will be stored. The collected Twitter information is limited to public data available via Twitter API. The stored data will be deleted after the study.</h4>
-                    <p>Use this tool to analyze credibility of your Twitter profile. Type your Twitter username as shown by the instruction image and press "Evaluate profile". Afterwards, please fill the provided questionnaire form, your input will be very appreciated!</p>
+                    <p>Analyse your Twitter profile’s credibility using a tool created by researchers at the University of Oulu, Finland. Type your Twitter username without the @-mark in the textbox below and click the button to let us compute your credibility score. By filling in a short questionnaire study after observing the score and the properties that affect it, you can participate in a $20 Amazon gift card raffle. You will also help researchers build better tools for understanding online social media and critical reading.</p>
                     <v-text-field
                         v-model="searchTerm"
                         label="Profile name"
@@ -33,6 +31,8 @@
                             color="green"
                         ></v-progress-circular>
                     </v-btn>
+                    <h3 class="pt-6">Disclaimer</h3>
+                    <h4>By proceeding to use this application, you consent to being a subject in a study by team of researchers from University of Oulu. Your Twitter information (only public accounts), results, and feedback will be stored. The collected Twitter information is limited to public data available via Twitter API. The stored data will be deleted after the study.</h4>
                 </v-col>
             </v-row>
 
