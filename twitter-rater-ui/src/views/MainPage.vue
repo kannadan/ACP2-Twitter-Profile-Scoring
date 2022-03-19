@@ -3,10 +3,10 @@
         <v-row justify="center" align="top" class="my-16">
             <h1>Evaluate your Twitter profile credibility!</h1>                                
         </v-row>            
-        <v-container fill-height fluid>
-            <v-row align="center" justify="center">
-                <v-col md="4">
-                    <p>Analyse your Twitter profile’s credibility using a tool created by researchers at the University of Oulu, Finland. Type your Twitter username without the @-mark in the textbox below and click the button to let us compute your credibility score. By filling in a short questionnaire study after observing the score and the properties that affect it, you can participate in a $20 Amazon gift card raffle. You will also help researchers build better tools for understanding online social media and critical reading.</p>
+        <v-container  fluid>
+            <v-row align="center" justify="center" >
+                <v-col md="4" class="pa-0">
+                    <p>Analyse your Twitter profile’s credibility using a tool created by researchers at the University of Oulu, Finland. Type your Twitter username without the @-mark in the textbox below and click the button to let us compute your credibility score. By filling in a short questionnaire study after observing the score and the properties that affect it, you will help researchers build better tools for understanding online social media and critical reading.</p>
                     <v-text-field
                         v-model="searchTerm"
                         label="Profile name"

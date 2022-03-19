@@ -1,10 +1,13 @@
 <template>
     <v-container fluid align="start">
-        <v-row justify="center" align="start">            
+        <v-row justify="center" align="top" class="mt-16">            
+            <v-col>
                 <h1>{{ username }}</h1>                            
+                <p>Your credibility score was computed using a simple Machine Learning algorithm that takes into account several factors of your profile, and also incorporates your latest tweets as input.</p>                            
+            </v-col>
         </v-row>
         <v-row justify="center" align="start">            
-                <p>Your credibility score was computed using a simple Machine Learning algorithm that takes into account several factors of your profile, and also incorporates your latest tweets as input.</p>                            
+                
         </v-row>
         <v-row justify="center" class="mt-8" fill-height>
             <v-col md=5 class="mt-6">
@@ -87,7 +90,7 @@
                         <a :href="feedbackLink" @click.prevent="feedbackClick">
                             <h1>Fill in the final questionnaire</h1>
                         </a>
-                        <p class="">By filling in the questionnaire, you will help researchers. We will also raffle a $20 Amazon gift card among the participants.</p>
+                        <p class="">By filling in the questionnaire, you will help researchers.</p>
 
                     </v-col>
                 </v-row>
