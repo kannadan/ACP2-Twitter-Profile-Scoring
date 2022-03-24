@@ -13,9 +13,9 @@ DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 def get_dataset():
     df = pd.DataFrame()
     df_data = []
-    profiles = read_all_profile_jsons()
     scores = get_score_labels()
-    profiles = [p for p in profiles if p['id'] in scores]
+    scored_profile_ids = list(scores.keys())
+    profiles = read_profile_jsons(scored_profile_ids)
     for profile in profiles:
         features = extract_all_features(profile)
         if features:
@@ -73,21 +73,20 @@ def get_mturk_scores():
     return scores_by_profile
 
 
-def read_all_profile_jsons():
-    #logger.info("Reading profile JSONs")
+def read_profile_jsons(profile_ids=None):
     jsons_path = unzip_profile_jsons()
     profiles = []
     for filename in os.listdir(jsons_path):
-        path = os.path.join(jsons_path, filename)
-        with open(path, 'r') as json_file:
-            profiles.append(json.load(json_file))
+        if not profile_ids or filename in profile_ids:
+            path = os.path.join(jsons_path, filename)
+            with open(path, 'r') as json_file:
+                profiles.append(json.load(json_file))
     profiles = validate_profiles(profiles)
     return profiles
 
 
 def get_random_profiles(num=50):
-    all_profiles = read_all_profile_jsons()
-    #logger.info(f"Choosing {num} profiles from total of {len(all_profiles)} profiles")
+    all_profiles = read_profile_jsons()
     selected_profiles = random.sample(all_profiles, num)
 
     csv_data = [["profile_id", "profile_url", "credibility"]]
@@ -99,7 +98,7 @@ def get_random_profiles(num=50):
         writer = csv.writer(csvfile, delimiter=",", quotechar="'", quoting=csv.QUOTE_MINIMAL)
         for csv_row in csv_data:
             writer.writerow(csv_row)
-    #logger.info("Done")
+
 
 def unzip_profile_jsons():
     jsons_path = os.path.join(DIR_PATH, "data", "twitter_profiles")
